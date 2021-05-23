@@ -11,6 +11,9 @@ use Lindelius\JsonPatch\Operation\RemoveOperation;
 use Lindelius\JsonPatch\Operation\ReplaceOperation;
 use Lindelius\JsonPatch\Operation\TestOperation;
 
+use function array_key_exists;
+use function is_array;
+
 /**
  * @internal
  * @link https://datatracker.ietf.org/doc/html/rfc6902#section-4

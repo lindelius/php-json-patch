@@ -5,6 +5,15 @@ namespace Lindelius\JsonPatch\Operation;
 use Lindelius\JsonPatch\Exception\FailedOperationException;
 use Lindelius\JsonPatch\Utility\JsonPointerUtility;
 
+use function array_is_list;
+use function array_key_exists;
+use function array_merge;
+use function array_pop;
+use function array_splice;
+use function count;
+use function is_array;
+use function preg_match;
+
 /**
  * @internal
  * @link https://datatracker.ietf.org/doc/html/rfc6902#section-4.1

@@ -2,6 +2,11 @@
 
 namespace Lindelius\JsonPatch\Utility;
 
+use function array_is_list;
+use function is_array;
+use function json_encode;
+use function ksort;
+
 /**
  * @internal
  * @link https://datatracker.ietf.org/doc/html/rfc6902#section-4.6

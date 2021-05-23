@@ -9,6 +9,10 @@ use Lindelius\JsonPatch\Operation\TestOperation;
 use Lindelius\JsonPatch\Utility\JsonPointerUtility;
 use Lindelius\JsonPatch\Utility\OperationUtility;
 
+use function array_key_exists;
+use function json_decode;
+use function strpos;
+
 final class Patcher implements PatcherInterface
 {
     private array $protectedPaths = [];

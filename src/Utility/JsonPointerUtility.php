@@ -4,6 +4,10 @@ namespace Lindelius\JsonPatch\Utility;
 
 use Lindelius\JsonPatch\Exception\InvalidPathException;
 
+use function array_shift;
+use function explode;
+use function str_replace;
+
 /**
  * @internal
  * @link https://datatracker.ietf.org/doc/html/rfc6901

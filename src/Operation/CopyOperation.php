@@ -6,6 +6,10 @@ use Lindelius\JsonPatch\Exception\FailedOperationException;
 use Lindelius\JsonPatch\Exception\InvalidOperationException;
 use Lindelius\JsonPatch\Utility\JsonPointerUtility;
 
+use function array_key_exists;
+use function array_pop;
+use function is_array;
+
 /**
  * @internal
  * @link https://datatracker.ietf.org/doc/html/rfc6902#section-4.5

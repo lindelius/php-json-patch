@@ -9,26 +9,39 @@ use Lindelius\JsonPatch\Utility\JsonPointerUtility;
 final class JsonPointerUtilityTest extends TestCase
 {
     /**
-     * @dataProvider provideRequirePrefix
+     * @dataProvider provideIncorrectlyFormattedPaths
      * @param string $path
      * @return void
      */
-    public function testRequirePrefix(string $path): void
+    public function testIncorrectlyFormattedPaths(string $path): void
     {
         $this->expectException(InvalidPathException::class);
 
         JsonPointerUtility::parse($path);
     }
 
-    public function provideRequirePrefix(): array
+    public function provideIncorrectlyFormattedPaths(): array
     {
         return [
+
+            // Missing prefix
             [""],
             ["a"],
-            ["a/b/c"],
             ["123"],
+            ["a/b/c"],
             ["a/1"],
             ["a~0b"],
+
+            // Includes white-space
+            ["/a/b c"],
+            ["/a/\t/c"],
+            ["/a/b\n/c"],
+            ["/ / "],
+
+            // Includes empty segments
+            ["//"],
+            ["/a//b"],
+
         ];
     }
 

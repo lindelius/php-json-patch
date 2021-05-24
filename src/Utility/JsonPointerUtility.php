@@ -20,35 +20,6 @@ final class JsonPointerUtility
     private const ENCODED_TILDE = "~0";
 
     /**
-     * Parse a given JSON Pointer path into segments.
-     *
-     * @param string $path
-     * @return string[]
-     * @throws InvalidPathException
-     */
-    public static function parse(string $path): array
-    {
-        if ($path === "/") {
-            return [];
-        }
-
-        $segments = explode("/", $path);
-
-        if (array_shift($segments) !== "" || empty($segments)) {
-            throw new InvalidPathException("The path must start with a forward slash, \"/\".");
-        }
-
-        // https://datatracker.ietf.org/doc/html/rfc6901#section-3
-        // https://datatracker.ietf.org/doc/html/rfc6901#section-4
-        foreach ($segments as &$segment) {
-            $segment = str_replace(self::ENCODED_FORWARD_SLASH, "/", $segment);
-            $segment = str_replace(self::ENCODED_TILDE, "~", $segment);
-        }
-
-        return $segments;
-    }
-
-    /**
      * Compile all unique parent paths for a given set of JSON Pointer paths.
      *
      * @param string[] $paths
@@ -79,5 +50,56 @@ final class JsonPointerUtility
         }
 
         return array_values($parentPaths);
+    }
+
+    /**
+     * Parse a given JSON Pointer path into segments.
+     *
+     * @param string $path
+     * @return string[]
+     * @throws InvalidPathException
+     */
+    public static function parse(string $path): array
+    {
+        if ($path === "/") {
+            return [];
+        }
+
+        self::ensureValidFormat($path);
+
+        // Split the path, and then drop the root segment
+        $segments = explode("/", $path);
+        array_shift($segments);
+
+        // https://datatracker.ietf.org/doc/html/rfc6901#section-3
+        // https://datatracker.ietf.org/doc/html/rfc6901#section-4
+        foreach ($segments as &$segment) {
+            $segment = str_replace(self::ENCODED_FORWARD_SLASH, "/", $segment);
+            $segment = str_replace(self::ENCODED_TILDE, "~", $segment);
+        }
+
+        return $segments;
+    }
+
+    /**
+     * Ensure that a given JSON Pointer path is correctly formatted.
+     *
+     * @param string $path
+     * @return void
+     * @throws InvalidPathException
+     */
+    public static function ensureValidFormat(string $path): void
+    {
+        if (strpos($path, "/") !== 0) {
+            throw new InvalidPathException("The path must start with a forward slash.");
+        }
+
+        if (preg_match("/\s+/", $path)) {
+            throw new InvalidPathException("The path must not contain any whitespace.");
+        }
+
+        if (strpos($path, "//") !== false) {
+            throw new InvalidPathException("The path must not contain any empty segments.");
+        }
     }
 }

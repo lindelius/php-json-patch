@@ -27,49 +27,61 @@ final class ImmutablePatcherTest extends TestCase
     {
         $this->expectException(ProtectedPathException::class);
 
-        $patcher = new ImmutablePatcher($protectedPaths);
+        $patcher = new ImmutablePatcher();
+
+        foreach ($protectedPaths as $path) {
+            $patcher = $patcher->addProtectedPath($path);
+        }
+
         $patcher->patch($document, $operations);
     }
 
     public function provideProtectedPaths(): array
     {
         return [
-            "Protected Root Level Path" => [
+            "Protected root-level path" => [
                 ["a" => 1],
                 ["/a"],
                 [
                     ["op" => "replace", "path" => "/a", "value" => 2],
                 ],
             ],
-            "Protected Root Level Path With Child Op" => [
+            "Multiple protected paths" => [
+                ["a" => 1, "b" => 2, "c" => 3],
+                ["/a", "/b", "/c"],
+                [
+                    ["op" => "remove", "path" => "/b"],
+                ],
+            ],
+            "Protected root-level path with child operation" => [
                 ["a" => ["b" => ["c" => 1]]],
                 ["/a"],
                 [
                     ["op" => "replace", "path" => "/a/b/c", "value" => 2],
                 ],
             ],
-            "Protected Nested Path" => [
+            "Protected nested path" => [
                 ["a" => ["b" => ["c" => 1]]],
                 ["/a/b/c"],
                 [
                     ["op" => "remove", "path" => "/a/b/c"],
                 ],
             ],
-            "Protected Nested Path With Parent Op" => [
+            "Protected nested path with parent operation" => [
                 ["a" => ["b" => ["c" => 1]]],
                 ["/a/b/c"],
                 [
                     ["op" => "remove", "path" => "/a"],
                 ],
             ],
-            "Move With Protected Path" => [
+            "Move with protected path" => [
                 ["a" => 1, "b" => 2],
                 ["/a"],
                 [
                     ["op" => "move", "from" => "/b", "path" => "/a"],
                 ],
             ],
-            "Move With Protected From Path" => [
+            "Move with protected from-path" => [
                 ["a" => 1, "b" => 2],
                 ["/b"],
                 [

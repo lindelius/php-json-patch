@@ -1,6 +1,9 @@
 {
     "name": "lindelius/php-json-patch",
     "description": "A zero-dependency PHP implementation of JSON Patch",
+    "keywords": ["json", "json patch"],
+    "homepage": "https://github.com/lindelius/php-json-patch",
+    "license": "Apache-2.0",
     "require": {
         "php": "^7.4||^8.0",
         "ext-json": "*"

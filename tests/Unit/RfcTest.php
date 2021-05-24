@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 final class RfcTest extends TestCase
 {
     /**
-     * Test all patches from the RFC that should succeed.
+     * Test all patch operations from the RFC that should succeed.
      *
      * @dataProvider provideSuccessfulPatches
      * @param array $document
@@ -120,7 +120,7 @@ final class RfcTest extends TestCase
     }
 
     /**
-     * Test all patches from the RFC that should fail.
+     * Test all patch operations from the RFC that should fail.
      *
      * @dataProvider provideErroneousPatches
      * @param array $document

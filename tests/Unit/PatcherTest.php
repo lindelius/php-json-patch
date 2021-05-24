@@ -50,7 +50,7 @@ final class PatcherTest extends TestCase
                 ["a" => ["b" => ["c" => 1]]],
                 ["/a"],
                 [
-                    ["op" => "move", "from" => "/a/b/c", "path" => "/d"],
+                    ["op" => "replace", "path" => "/a/b/c", "value" => 2],
                 ],
             ],
             "Protected Nested Path" => [
@@ -65,6 +65,20 @@ final class PatcherTest extends TestCase
                 ["/a/b/c"],
                 [
                     ["op" => "remove", "path" => "/a"],
+                ],
+            ],
+            "Move With Protected Path" => [
+                ["a" => 1, "b" => 2],
+                ["/a"],
+                [
+                    ["op" => "move", "from" => "/b", "path" => "/a"],
+                ],
+            ],
+            "Move With Protected From Path" => [
+                ["a" => 1, "b" => 2],
+                ["/b"],
+                [
+                    ["op" => "move", "from" => "/b", "path" => "/a"],
                 ],
             ],
         ];

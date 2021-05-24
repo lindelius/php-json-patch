@@ -70,20 +70,26 @@ final class Patcher implements PatcherInterface
             return;
         }
 
-        $sensitivePath = $operation instanceof MoveOperation
-            ? $operation->getFrom()
-            : $operation->getPath();
+        $sensitivePaths = $operation instanceof MoveOperation
+            ? [$operation->getPath(), $operation->getFrom()]
+            : [$operation->getPath()];
 
-        // Make sure a protected path cannot be touched by modifying a parent
-        if (array_key_exists($sensitivePath, $this->protectedParentPaths)) {
-            throw new ProtectedPathException("The path for operation {$operation->getIndex()} is protected.");
-        }
-
-        // Make sure neither the protected path nor any of its child paths can
-        // be modified directly.
-        foreach ($this->protectedPaths as $path) {
-            if (strpos($sensitivePath . "/", $path . "/") === 0) {
+        foreach ($sensitivePaths as $sensitivePath) {
+            // Make sure a protected path cannot be touched by modifying one of
+            // its parents. In this case we are only looking for exact matches,
+            // since you should be able to modify the "/a/c" path if "/a/b" is
+            // protected, but not "/a".
+            if (array_key_exists($sensitivePath, $this->protectedParentPaths)) {
                 throw new ProtectedPathException("The path for operation {$operation->getIndex()} is protected.");
+            }
+
+            // Make sure neither the protected path nor any of its child paths
+            // can be modified directly. If the "/a/b" path is protected, you
+            // should not be able to modify "/a/b/c".
+            foreach ($this->protectedPaths as $path) {
+                if (strpos($sensitivePath . "/", $path . "/") === 0) {
+                    throw new ProtectedPathException("The path for operation {$operation->getIndex()} is protected.");
+                }
             }
         }
     }

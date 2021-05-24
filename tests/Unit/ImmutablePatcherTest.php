@@ -4,7 +4,7 @@ namespace Lindelius\JsonPatch\Tests\Unit;
 
 use Lindelius\JsonPatch\Exception\PatchException;
 use Lindelius\JsonPatch\Exception\ProtectedPathException;
-use Lindelius\JsonPatch\Patcher;
+use Lindelius\JsonPatch\ImmutablePatcher;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @see RfcTest
  */
-final class PatcherTest extends TestCase
+final class ImmutablePatcherTest extends TestCase
 {
     /**
      * @dataProvider provideProtectedPaths
@@ -27,12 +27,7 @@ final class PatcherTest extends TestCase
     {
         $this->expectException(ProtectedPathException::class);
 
-        $patcher = new Patcher();
-
-        foreach ($protectedPaths as $path) {
-            $patcher->addProtectedPath($path);
-        }
-
+        $patcher = new ImmutablePatcher($protectedPaths);
         $patcher->patch($document, $operations);
     }
 

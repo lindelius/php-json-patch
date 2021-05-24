@@ -3,7 +3,7 @@
 namespace Lindelius\JsonPatch\Tests\Unit;
 
 use Lindelius\JsonPatch\Exception\PatchException;
-use Lindelius\JsonPatch\Patcher;
+use Lindelius\JsonPatch\ImmutablePatcher;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -14,6 +14,8 @@ use PHPUnit\Framework\TestCase;
 final class RfcTest extends TestCase
 {
     /**
+     * Test all patches from the RFC that should succeed.
+     *
      * @dataProvider provideSuccessfulPatches
      * @param array $document
      * @param array $operations
@@ -23,7 +25,7 @@ final class RfcTest extends TestCase
      */
     public function testSuccessfulPatches(array $document, array $operations, array $expected): void
     {
-        $this->assertSame($expected, (new Patcher())->patch($document, $operations));
+        $this->assertSame($expected, (new ImmutablePatcher())->patch($document, $operations));
     }
 
     public function provideSuccessfulPatches(): array
@@ -118,6 +120,8 @@ final class RfcTest extends TestCase
     }
 
     /**
+     * Test all patches from the RFC that should fail.
+     *
      * @dataProvider provideErroneousPatches
      * @param array $document
      * @param array $operations
@@ -127,7 +131,7 @@ final class RfcTest extends TestCase
     {
         $this->expectException(PatchException::class);
 
-        (new Patcher())->patch($document, $operations);
+        (new ImmutablePatcher())->patch($document, $operations);
     }
 
     public function provideErroneousPatches(): array

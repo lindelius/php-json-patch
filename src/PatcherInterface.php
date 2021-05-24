@@ -10,15 +10,15 @@ interface PatcherInterface
      * Register a new path as "protected", meaning that no patch operation that
      * modifies that value of the given path may be executed.
      *
-     * @param string $path
-     * @return void
+     * @param string $path The JSON Pointer path that should be protected.
+     * @return self
      */
-    public function addProtectedPath(string $path): void;
+    public function addProtectedPath(string $path): self;
 
     /**
      * Get all paths that have been registered as "protected".
      *
-     * @return string[]
+     * @return string[] The JSON Pointer paths that are protected.
      */
     public function getProtectedPaths(): array;
 

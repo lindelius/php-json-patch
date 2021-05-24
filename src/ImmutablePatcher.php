@@ -13,25 +13,25 @@ use function array_key_exists;
 use function json_decode;
 use function strpos;
 
-final class Patcher implements PatcherInterface
+final class ImmutablePatcher implements PatcherInterface
 {
-    private array $protectedPaths = [];
-    private array $protectedParentPaths = [];
+    private array $protectedPaths;
+    private array $protectedParentPaths;
 
-    public function addProtectedPath(string $path): void
+    /**
+     * Construct an immutable patcher with a given set of protected paths.
+     *
+     * @param string[] $protectedPaths
+     */
+    public function __construct(array $protectedPaths = [])
     {
-        $this->protectedPaths[] = $path;
+        $this->protectedPaths = $protectedPaths;
+        $this->protectedParentPaths = $this->compileParentPaths($protectedPaths);
+    }
 
-        // Compile all parent paths that should also be protected
-        $segments = JsonPointerUtility::parse($path);
-        $segmentPrefix = "";
-
-        foreach ($segments as $segment) {
-            $segment = $segmentPrefix . "/" . $segment;
-            $segmentPrefix = $segment;
-
-            $this->protectedParentPaths[$segment] = $segment;
-        }
+    public function addProtectedPath(string $path): self
+    {
+        return new self([$path, ...$this->protectedPaths]);
     }
 
     public function getProtectedPaths(): array
@@ -92,5 +92,30 @@ final class Patcher implements PatcherInterface
                 }
             }
         }
+    }
+
+    /**
+     * Compile all unique parent paths for a given set of JSON Pointer paths.
+     *
+     * @param string[] $paths The JSON Pointer paths to compile.
+     * @return string[] All unique parent paths, indexed by path.
+     */
+    private function compileParentPaths(array $paths): array
+    {
+        $parentPaths = [];
+
+        foreach ($paths as $path) {
+            $segments = JsonPointerUtility::parse($path);
+            $segmentPrefix = "";
+
+            foreach ($segments as $segment) {
+                $segment = $segmentPrefix . "/" . $segment;
+                $segmentPrefix = $segment;
+
+                $parentPaths[$segment] = $segment;
+            }
+        }
+
+        return $parentPaths;
     }
 }

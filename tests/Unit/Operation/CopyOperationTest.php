@@ -70,27 +70,27 @@ final class CopyOperationTest extends TestCase
     {
         return [
             "Copy to root" => [
-                ["/a" => 1],
+                ["a" => 1],
                 "/",
                 "/a",
             ],
             "Copy from root" => [
-                ["/a" => 1],
+                ["a" => 1],
                 "/b",
                 "/",
             ],
             "Invalid from-path #1" => [
-                ["/a" => 1],
+                ["a" => 1],
                 "/x",
                 "/a/b",
             ],
             "Invalid from-path #2" => [
-                ["/a" => 1],
+                ["a" => 1],
                 "/x",
                 "/a/b/c",
             ],
             "Invalid from-path #3" => [
-                ["/a" => [0, 1]],
+                ["a" => [0, 1]],
                 "/x",
                 "/a/b",
             ],

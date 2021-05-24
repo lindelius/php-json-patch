@@ -38,20 +38,20 @@ final class AddOperationTest extends TestCase
             "Replace document" => [
                 ["a" => 1, "b" => 2],
                 "/",
-                ["c" => 1337],
-                ["c" => 1337],
+                ["c" => 3],
+                ["c" => 3],
             ],
             "Add root-level path" => [
-                ["a" => 1337],
+                ["a" => 1],
                 "/b",
-                7331,
-                ["a" => 1337, "b" => 7331],
+                2,
+                ["a" => 1, "b" => 2],
             ],
             "Add nested path" => [
-                ["a" => ["b" => ["c" => 1337]]],
+                ["a" => ["b" => ["c" => 3]]],
                 "/a/b/d",
-                7331,
-                ["a" => ["b" => ["c" => 1337, "d" => 7331]]],
+                4,
+                ["a" => ["b" => ["c" => 3, "d" => 4]]],
             ],
             "Add to array #1" => [
                 ["a" => [1, 2, 4, 5]],
@@ -94,32 +94,32 @@ final class AddOperationTest extends TestCase
     {
         return [
             "Invalid path #1" => [
-                ["/a" => 1],
+                ["a" => 1],
                 "/a/b",
                 2,
             ],
             "Invalid path #2" => [
-                ["/a" => 1],
+                ["a" => 1],
                 "/a/b/c",
                 3,
             ],
             "Non-document when replacing root" => [
-                ["/a" => 1],
+                ["a" => 1],
                 "/",
                 "non-document value",
             ],
             "Append item to non-list" => [
-                ["/a" => ["/b" => 2]],
+                ["a" => ["b" => 2]],
                 "/a/-",
                 3,
             ],
             "Insert item out-of-bounds" => [
-                ["/a" => [0, 1, 2, 3]],
+                ["a" => [0, 1, 2, 3]],
                 "/a/5",
                 5,
             ],
             "Add member to list" => [
-                ["/a" => [0, 1, 2, 3]],
+                ["a" => [0, 1, 2, 3]],
                 "/a/b",
                 2,
             ],

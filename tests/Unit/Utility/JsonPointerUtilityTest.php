@@ -47,6 +47,10 @@ final class JsonPointerUtilityTest extends TestCase
     {
         return [
 
+            "Root" => [
+                "/",
+                [],
+            ],
             "Root Level Path" => [
                 "/a",
                 ["a"],
@@ -91,6 +95,42 @@ final class JsonPointerUtilityTest extends TestCase
                 ["some/~thing", "else"],
             ],
 
+        ];
+    }
+
+    /**
+     * @dataProvider provideCompileParentPaths
+     * @param string[] $paths
+     * @param string[] $expected
+     * @return void
+     */
+    public function testCompileParentPaths(array $paths, array $expected): void
+    {
+        $compiled = JsonPointerUtility::compileParentPaths($paths);
+        sort($compiled);
+
+        $this->assertSame($expected, $compiled);
+    }
+
+    public function provideCompileParentPaths(): array
+    {
+        return [
+            [
+                ["/"],
+                ["/"],
+            ],
+            [
+                ["/a"],
+                ["/"],
+            ],
+            [
+                ["/a/b/c"],
+                ["/", "/a", "/a/b"],
+            ],
+            [
+                ["/a/a~0a/a~0b~1c/1"],
+                ["/", "/a", "/a/a~0a", "/a/a~0a/a~0b~1c"],
+            ],
         ];
     }
 }

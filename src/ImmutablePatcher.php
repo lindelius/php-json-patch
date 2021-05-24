@@ -26,7 +26,7 @@ final class ImmutablePatcher implements PatcherInterface
     public function __construct(array $protectedPaths = [])
     {
         $this->protectedPaths = $protectedPaths;
-        $this->protectedParentPaths = $this->compileParentPaths($protectedPaths);
+        $this->protectedParentPaths = array_flip(JsonPointerUtility::compileParentPaths($protectedPaths));
     }
 
     public function addProtectedPath(string $path): self
@@ -78,7 +78,7 @@ final class ImmutablePatcher implements PatcherInterface
             // Make sure a protected path cannot be touched by modifying one of
             // its parents. In this case we are only looking for exact matches,
             // since you should be able to modify the "/a/c" path if "/a/b" is
-            // protected, but not "/a".
+            // protected, but not "/a" or "/".
             if (array_key_exists($sensitivePath, $this->protectedParentPaths)) {
                 throw new ProtectedPathException("The path for operation {$operation->getIndex()} is protected.");
             }
@@ -92,30 +92,5 @@ final class ImmutablePatcher implements PatcherInterface
                 }
             }
         }
-    }
-
-    /**
-     * Compile all unique parent paths for a given set of JSON Pointer paths.
-     *
-     * @param string[] $paths The JSON Pointer paths to compile.
-     * @return string[] All unique parent paths, indexed by path.
-     */
-    private function compileParentPaths(array $paths): array
-    {
-        $parentPaths = [];
-
-        foreach ($paths as $path) {
-            $segments = JsonPointerUtility::parse($path);
-            $segmentPrefix = "";
-
-            foreach ($segments as $segment) {
-                $segment = $segmentPrefix . "/" . $segment;
-                $segmentPrefix = $segment;
-
-                $parentPaths[$segment] = $segment;
-            }
-        }
-
-        return $parentPaths;
     }
 }

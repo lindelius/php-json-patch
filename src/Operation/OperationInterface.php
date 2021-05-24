@@ -2,12 +2,14 @@
 
 namespace Lindelius\JsonPatch\Operation;
 
+use JsonSerializable;
+
 /**
  * A common interface for JSON Patch operations.
  *
  * @internal
  */
-interface OperationInterface
+interface OperationInterface extends JsonSerializable
 {
     /**
      * Apply the operation to a given document.

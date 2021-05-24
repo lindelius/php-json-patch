@@ -73,4 +73,13 @@ final class TestOperation implements OperationInterface
     {
         return $this->value;
     }
+
+    public function jsonSerialize()
+    {
+        return [
+            "op" => "test",
+            "path" => $this->path,
+            "value" => $this->value,
+        ];
+    }
 }

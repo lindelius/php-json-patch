@@ -133,4 +133,13 @@ final class AddOperation implements OperationInterface
     {
         return $this->value;
     }
+
+    public function jsonSerialize()
+    {
+        return [
+            "op" => "add",
+            "path" => $this->path,
+            "value" => $this->value,
+        ];
+    }
 }

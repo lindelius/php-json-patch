@@ -65,6 +65,16 @@ final class CopyOperation implements OperationInterface
         return (new AddOperation($this->index, $this->path, $valueToCopy))->apply($document);
     }
 
+    /**
+     * Get the JSON Pointer path to the value that should be copied.
+     *
+     * @return string
+     */
+    public function getFrom(): string
+    {
+        return $this->from;
+    }
+
     public function getIndex(): int
     {
         return $this->index;
@@ -75,13 +85,12 @@ final class CopyOperation implements OperationInterface
         return $this->path;
     }
 
-    /**
-     * Get the JSON Pointer path to the value that should be copied.
-     *
-     * @return string
-     */
-    public function getFrom(): string
+    public function jsonSerialize()
     {
-        return $this->from;
+        return [
+            "op" => "copy",
+            "path" => $this->path,
+            "from" => $this->from,
+        ];
     }
 }

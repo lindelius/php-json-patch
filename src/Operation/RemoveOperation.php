@@ -77,4 +77,12 @@ final class RemoveOperation implements OperationInterface
     {
         return $this->path;
     }
+
+    public function jsonSerialize()
+    {
+        return [
+            "op" => "remove",
+            "path" => $this->path,
+        ];
+    }
 }

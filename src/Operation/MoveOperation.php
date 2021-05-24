@@ -75,6 +75,16 @@ final class MoveOperation implements OperationInterface
         return (new AddOperation($this->index, $this->path, $valueToMove))->apply($document);
     }
 
+    /**
+     * Get the JSON Pointer path to the value that should be moved.
+     *
+     * @return string
+     */
+    public function getFrom(): string
+    {
+        return $this->from;
+    }
+
     public function getIndex(): int
     {
         return $this->index;
@@ -85,13 +95,12 @@ final class MoveOperation implements OperationInterface
         return $this->path;
     }
 
-    /**
-     * Get the JSON Pointer path to the value that should be moved.
-     *
-     * @return string
-     */
-    public function getFrom(): string
+    public function jsonSerialize()
     {
-        return $this->from;
+        return [
+            "op" => "move",
+            "path" => $this->path,
+            "from" => $this->from,
+        ];
     }
 }

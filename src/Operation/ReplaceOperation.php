@@ -75,4 +75,13 @@ final class ReplaceOperation implements OperationInterface
     {
         return $this->value;
     }
+
+    public function jsonSerialize()
+    {
+        return [
+            "op" => "replace",
+            "path" => $this->path,
+            "value" => $this->value,
+        ];
+    }
 }

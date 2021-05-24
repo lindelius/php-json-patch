@@ -7,6 +7,15 @@ use PHPUnit\Framework\TestCase;
 
 final class MoveOperationTest extends TestCase
 {
+    public function testConstruct(): void
+    {
+        $operation = new MoveOperation(5, "/a/b", "/a/c/b");
+
+        $this->assertSame(5, $operation->getIndex());
+        $this->assertSame("/a/b", $operation->getPath());
+        $this->assertSame("/a/c/b", $operation->getFrom());
+    }
+
     /**
      * @dataProvider provideApply
      * @param array $document

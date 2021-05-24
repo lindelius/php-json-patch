@@ -2,7 +2,7 @@
 
 namespace Lindelius\JsonPatch\Tests\Unit\Operation;
 
-use Lindelius\JsonPatch\Exception\FailedOperationException;
+use Lindelius\JsonPatch\Exception\PatchException;
 use Lindelius\JsonPatch\Operation\AddOperation;
 use PHPUnit\Framework\TestCase;
 
@@ -85,7 +85,7 @@ final class AddOperationTest extends TestCase
      */
     public function testErroneousOperations(array $document, string $path, $value): void
     {
-        $this->expectException(FailedOperationException::class);
+        $this->expectException(PatchException::class);
 
         (new AddOperation(0, $path, $value))->apply($document);
     }

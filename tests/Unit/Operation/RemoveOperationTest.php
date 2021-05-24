@@ -7,6 +7,14 @@ use Lindelius\JsonPatch\Operation\RemoveOperation;
 
 final class RemoveOperationTest extends TestCase
 {
+    public function testConstruct(): void
+    {
+        $operation = new RemoveOperation(5, "/a/b");
+
+        $this->assertSame(5, $operation->getIndex());
+        $this->assertSame("/a/b", $operation->getPath());
+    }
+
     /**
      * @dataProvider provideApply
      * @param array $document

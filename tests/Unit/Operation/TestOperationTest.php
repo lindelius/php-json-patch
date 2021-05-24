@@ -8,6 +8,15 @@ use Lindelius\JsonPatch\Operation\TestOperation;
 
 final class TestOperationTest extends TestCase
 {
+    public function testConstruct(): void
+    {
+        $operation = new TestOperation(5, "/a/b", "some-value");
+
+        $this->assertSame(5, $operation->getIndex());
+        $this->assertSame("/a/b", $operation->getPath());
+        $this->assertSame("some-value", $operation->getValue());
+    }
+
     /**
      * @dataProvider provideApply
      * @param array $document

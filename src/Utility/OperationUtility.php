@@ -36,7 +36,13 @@ final class OperationUtility
      */
     public static function parse(iterable $rawOperations): iterable
     {
+        $expectedIndex = 0;
+
         foreach ($rawOperations as $index => $operation) {
+            if ($index !== $expectedIndex++) {
+                throw new InvalidOperationException("Invalid operation index.");
+            }
+
             // Verify that each operation includes the required members
             // https://datatracker.ietf.org/doc/html/rfc6902#section-4
             if (!is_array($operation)) {

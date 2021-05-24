@@ -2,7 +2,7 @@
 
 namespace Lindelius\JsonPatch\Tests\Unit\Operation;
 
-use Lindelius\JsonPatch\Exception\FailedOperationException;
+use Lindelius\JsonPatch\Exception\PatchException;
 use Lindelius\JsonPatch\Operation\CopyOperation;
 use PHPUnit\Framework\TestCase;
 
@@ -13,8 +13,8 @@ final class CopyOperationTest extends TestCase
         $operation = new CopyOperation(5, "/a/b", "/a/c/b");
 
         $this->assertSame(5, $operation->getIndex());
-        $this->assertSame("/b", $operation->getPath());
-        $this->assertSame("/a/b", $operation->getFrom());
+        $this->assertSame("/a/b", $operation->getPath());
+        $this->assertSame("/a/c/b", $operation->getFrom());
     }
 
     /**
@@ -36,16 +36,16 @@ final class CopyOperationTest extends TestCase
     {
         return [
             "Copy root-level path" => [
-                ["a" => 1337, "b" => 7331],
+                ["a" => 1, "b" => 2],
                 "/c",
                 "/b",
-                ["a" => 1337, "b" => 7331, "c" => 7331],
+                ["a" => 1, "b" => 2, "c" => 2],
             ],
             "Copy nested path" => [
-                ["a" => ["b" => ["c" => 7331]]],
-                "/d",
+                ["a" => ["b" => ["c" => 3]]],
+                "/x",
                 "/a/b/c",
-                ["a" => ["b" => ["c" => 7331]], "d" => 7331],
+                ["a" => ["b" => ["c" => 3]], "x" => 3],
             ],
         ];
     }
@@ -61,7 +61,7 @@ final class CopyOperationTest extends TestCase
      */
     public function testErroneousOperations(array $document, string $path, string $from): void
     {
-        $this->expectException(FailedOperationException::class);
+        $this->expectException(PatchException::class);
 
         (new CopyOperation(0, $path, $from))->apply($document);
     }
@@ -81,18 +81,18 @@ final class CopyOperationTest extends TestCase
             ],
             "Invalid from-path #1" => [
                 ["/a" => 1],
+                "/x",
                 "/a/b",
-                2,
             ],
             "Invalid from-path #2" => [
                 ["/a" => 1],
+                "/x",
                 "/a/b/c",
-                3,
             ],
             "Invalid from-path #3" => [
                 ["/a" => [0, 1]],
+                "/x",
                 "/a/b",
-                2,
             ],
         ];
     }

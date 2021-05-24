@@ -1,6 +1,7 @@
 # php-json-patch
 
 [![CircleCI](https://circleci.com/gh/lindelius/php-json-patch.svg?style=shield)](https://circleci.com/gh/lindelius/php-json-patch)
+[![Coverage Status](https://coveralls.io/repos/github/lindelius/php-json-patch/badge.svg?branch=master)](https://coveralls.io/github/lindelius/php-json-patch?branch=master)
 
 A zero-dependency PHP implementation of JSON Patch ([RFC 6902](https://tools.ietf.org/html/rfc6902)).
 

@@ -3,15 +3,13 @@
     "description": "A zero-dependency PHP implementation of JSON Patch",
     "require": {
         "php": "^7.4||^8.0",
-        "ext-json": "*"
+        "ext-json": "*",
+        "symfony/polyfill-php81": "^1.22"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5"
     },
     "autoload": {
-        "files": [
-            "php81-polyfill.php"
-        ],
         "psr-4": {
             "Lindelius\\JsonPatch\\": "src"
         }

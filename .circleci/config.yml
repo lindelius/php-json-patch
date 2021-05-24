@@ -12,6 +12,11 @@ jobs:
     steps:
       - checkout
       - run:
+          name: "Install extensions"
+          command: |-
+            sudo apt-get update
+            sudo apt-get install -y php<< parameters.php_version >>-pcov
+      - run:
           name: "Install dependencies"
           command: >-
             composer install
@@ -19,6 +24,10 @@ jobs:
           name: "Run unit tests"
           command: >-
             vendor/bin/phpunit
+      - run:
+          name: "Run coverage report"
+          command: >-
+            vendor/bin/php-coveralls --coverage_clover=build/logs/clover.xml
 
 workflows:
   all:

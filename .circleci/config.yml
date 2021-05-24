@@ -27,7 +27,7 @@ jobs:
       - run:
           name: "Run coverage report"
           command: >-
-            vendor/bin/php-coveralls --coverage_clover=build/logs/clover.xml
+            vendor/bin/php-coveralls --coverage_clover=/tmp/clover.xml
 
 workflows:
   all:

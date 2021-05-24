@@ -3,9 +3,8 @@
 namespace Lindelius\JsonPatch\Tests\Unit\Operation;
 
 use Lindelius\JsonPatch\Exception\PatchException;
-use PHPUnit\Framework\TestCase;
-use Lindelius\JsonPatch\Exception\FailedOperationException;
 use Lindelius\JsonPatch\Operation\TestOperation;
+use PHPUnit\Framework\TestCase;
 
 final class TestOperationTest extends TestCase
 {

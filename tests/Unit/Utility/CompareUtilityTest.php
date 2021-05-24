@@ -31,7 +31,7 @@ final class CompareUtilityTest extends TestCase
                 true,
                 true,
             ],
-            "Boolean Fail" => [
+            "Boolean fail" => [
                 true,
                 false,
                 false,

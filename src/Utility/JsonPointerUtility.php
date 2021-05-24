@@ -4,7 +4,9 @@ namespace Lindelius\JsonPatch\Utility;
 
 use Lindelius\JsonPatch\Exception\InvalidPathException;
 
+use function array_pop;
 use function array_shift;
+use function array_values;
 use function explode;
 use function str_replace;
 

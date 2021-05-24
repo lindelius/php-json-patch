@@ -26,11 +26,11 @@ interface PatcherInterface
      * Patch a given document with a given set of operations.
      *
      * @param array $document The document to apply the patches to.
-     * @param array $operations The JSON Patch operations in array format.
+     * @param iterable $operations The JSON Patch operations in array format.
      * @return array The document after the patch operations have been applied.
      * @throws PatchException
      */
-    public function patch(array $document, array $operations): array;
+    public function patch(array $document, iterable $operations): array;
 
     /**
      * Patch a given document with a given set of operations.

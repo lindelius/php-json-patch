@@ -34,10 +34,8 @@ final class OperationUtility
      * @return OperationInterface[]
      * @throws InvalidOperationException
      */
-    public static function parse(array $rawOperations): array
+    public static function parse(iterable $rawOperations): iterable
     {
-        $operations = [];
-
         foreach ($rawOperations as $index => $operation) {
             // Verify that each operation includes the required members
             // https://datatracker.ietf.org/doc/html/rfc6902#section-4
@@ -60,7 +58,7 @@ final class OperationUtility
                         throw InvalidOperationException::missingField($index, "value");
                     }
 
-                    $operations[] = new AddOperation($index, $operation["path"], $operation["value"]);
+                    yield new AddOperation($index, $operation["path"], $operation["value"]);
                     break;
 
                 case self::COPY_OPERATION:
@@ -69,7 +67,7 @@ final class OperationUtility
                         throw InvalidOperationException::missingField($index, "from");
                     }
 
-                    $operations[] = new CopyOperation($index, $operation["path"], $operation["from"]);
+                    yield new CopyOperation($index, $operation["path"], $operation["from"]);
                     break;
 
                 case self::MOVE_OPERATION:
@@ -78,12 +76,12 @@ final class OperationUtility
                         throw InvalidOperationException::missingField($index, "from");
                     }
 
-                    $operations[] = new MoveOperation($index, $operation["path"], $operation["from"]);
+                    yield new MoveOperation($index, $operation["path"], $operation["from"]);
                     break;
 
                 case self::REMOVE_OPERATION:
                     // https://datatracker.ietf.org/doc/html/rfc6902#section-4.2
-                    $operations[] = new RemoveOperation($index, $operation["path"]);
+                    yield new RemoveOperation($index, $operation["path"]);
                     break;
 
                 case self::REPLACE_OPERATION:
@@ -92,7 +90,7 @@ final class OperationUtility
                         throw InvalidOperationException::missingField($index, "value");
                     }
 
-                    $operations[] = new ReplaceOperation($index, $operation["path"], $operation["value"]);
+                    yield new ReplaceOperation($index, $operation["path"], $operation["value"]);
                     break;
 
                 case self::TEST_OPERATION:
@@ -101,7 +99,7 @@ final class OperationUtility
                         throw InvalidOperationException::missingField($index, "value");
                     }
 
-                    $operations[] = new TestOperation($index, $operation["path"], $operation["value"]);
+                    yield new TestOperation($index, $operation["path"], $operation["value"]);
                     break;
 
                 default:
@@ -110,7 +108,5 @@ final class OperationUtility
                     throw new InvalidOperationException("Unsupported operation at {$index}.");
             }
         }
-
-        return $operations;
     }
 }

@@ -39,7 +39,7 @@ final class ImmutablePatcher implements PatcherInterface
         return $this->protectedPaths;
     }
 
-    public function patch(array $document, array $operations): array
+    public function patch(array $document, iterable $operations): array
     {
         // Apply the operations in order. If one fails, all should fail.
         // https://datatracker.ietf.org/doc/html/rfc6902#section-5

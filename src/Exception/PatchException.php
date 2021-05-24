@@ -2,6 +2,8 @@
 
 namespace Lindelius\JsonPatch\Exception;
 
-interface PatchException
+use Throwable;
+
+interface PatchException extends Throwable
 {
 }

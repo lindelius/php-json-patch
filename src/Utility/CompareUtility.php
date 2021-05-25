@@ -49,7 +49,7 @@ final class CompareUtility
         }
 
         // Recursively prepare any nested arrays
-        foreach ($value as $nestedValue) {
+        foreach ($value as &$nestedValue) {
             if (is_array($nestedValue)) {
                 self::recursivePrepare($nestedValue);
             }

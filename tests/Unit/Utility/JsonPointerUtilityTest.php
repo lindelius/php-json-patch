@@ -3,8 +3,8 @@
 namespace Lindelius\JsonPatch\Tests\Unit\Utility;
 
 use Lindelius\JsonPatch\Exception\InvalidPathException;
-use PHPUnit\Framework\TestCase;
 use Lindelius\JsonPatch\Utility\JsonPointerUtility;
+use PHPUnit\Framework\TestCase;
 
 final class JsonPointerUtilityTest extends TestCase
 {
@@ -64,11 +64,11 @@ final class JsonPointerUtilityTest extends TestCase
                 "/",
                 [],
             ],
-            "Root Level Path" => [
+            "Root-level path" => [
                 "/a",
                 ["a"],
             ],
-            "Nested Path" => [
+            "Nested path" => [
                 "/a/b/c",
                 ["a", "b", "c"],
             ],
@@ -87,23 +87,23 @@ final class JsonPointerUtilityTest extends TestCase
                 "/some~01thing/else",
                 ["some~1thing", "else"],
             ],
-            "Forward Slash #1" => [
+            "Forward slash #1" => [
                 "/some~1thing/else",
                 ["some/thing", "else"],
             ],
-            "Forward Slash #2" => [
+            "Forward slash #2" => [
                 "/some~10thing/else",
                 ["some/0thing", "else"],
             ],
-            "Forward Slash #3" => [
+            "Forward slash #3" => [
                 "/some~11thing/else",
                 ["some/1thing", "else"],
             ],
-            "Specials Combined" => [
+            "Specials combined" => [
                 "/some~0~1thing/else",
                 ["some~/thing", "else"],
             ],
-            "Specials Combined Reverse" => [
+            "Specials combined reverse" => [
                 "/some~1~0thing/else",
                 ["some/~thing", "else"],
             ],

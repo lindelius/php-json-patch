@@ -16,6 +16,8 @@ use PHPUnit\Framework\TestCase;
 final class ImmutablePatcherTest extends TestCase
 {
     /**
+     * Test the protected paths functionality.
+     *
      * @dataProvider provideProtectedPaths
      * @param array $document
      * @param array $protectedPaths

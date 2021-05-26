@@ -2,6 +2,7 @@
 
 namespace Lindelius\JsonPatch\Tests\Unit;
 
+use Lindelius\JsonPatch\Exception\FailedOperationException;
 use Lindelius\JsonPatch\Exception\PatchException;
 use Lindelius\JsonPatch\ImmutablePatcher;
 use PHPUnit\Framework\TestCase;
@@ -26,6 +27,19 @@ final class RfcTest extends TestCase
     public function testSuccessfulPatches(array $document, array $operations, array $expected): void
     {
         $this->assertSame($expected, (new ImmutablePatcher())->patch($document, $operations));
+    }
+
+    /**
+     * @dataProvider provideSuccessfulPatches
+     * @param array $document
+     * @param array $operations
+     * @param array $expected
+     * @return void
+     * @throws PatchException
+     */
+    public function testSuccessfulPatchesFromJson(array $document, array $operations, array $expected): void
+    {
+        $this->assertSame($expected, (new ImmutablePatcher())->patchFromJson($document, json_encode($operations)));
     }
 
     public function provideSuccessfulPatches(): array
@@ -126,12 +140,27 @@ final class RfcTest extends TestCase
      * @param array $document
      * @param array $operations
      * @return void
+     * @throws PatchException
      */
     public function testErroneousPatches(array $document, array $operations): void
     {
-        $this->expectException(PatchException::class);
+        $this->expectException(FailedOperationException::class);
 
         (new ImmutablePatcher())->patch($document, $operations);
+    }
+
+    /**
+     * @dataProvider provideErroneousPatches
+     * @param array $document
+     * @param array $operations
+     * @return void
+     * @throws PatchException
+     */
+    public function testErroneousPatchesFromJson(array $document, array $operations): void
+    {
+        $this->expectException(FailedOperationException::class);
+
+        (new ImmutablePatcher())->patchFromJson($document, json_encode($operations));
     }
 
     public function provideErroneousPatches(): array

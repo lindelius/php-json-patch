@@ -7,8 +7,8 @@ use Lindelius\JsonPatch\Exception\PatchException;
 interface PatcherInterface
 {
     /**
-     * Register a new path as "protected", meaning that no patch operation that
-     * modifies that value of the given path may be executed.
+     * Register a given path as "protected", meaning that no patch operation
+     * that modifies the value of the given path may be executed.
      *
      * @param string $path The JSON Pointer path that should be protected.
      * @return self

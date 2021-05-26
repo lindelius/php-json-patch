@@ -32,7 +32,7 @@ final class ImmutablePatcher implements PatcherInterface
 
     public function addProtectedPath(string $path): self
     {
-        return new self([$path, ...$this->protectedPaths]);
+        return new self([...$this->protectedPaths, $path]);
     }
 
     public function getProtectedPaths(): array

@@ -24,23 +24,18 @@ final class JsonPointerUtilityTest extends TestCase
     {
         return [
 
-            // Missing prefix
-            [""],
-            ["a"],
-            ["123"],
-            ["a/b/c"],
-            ["a/1"],
-            ["a~0b"],
+            "Missing prefix #1" => [""],
+            "Missing prefix #2" => ["123"],
+            "Missing prefix #3" => ["a/b/c"],
+            "Missing prefix #4" => ["a~0b"],
 
-            // Includes white-space
-            ["/a/b c"],
-            ["/a/\t/c"],
-            ["/a/b\n/c"],
-            ["/ / "],
+            "Path with whitespace #1" => ["/a/b c"],
+            "Path with whitespace #2" => ["/a/\t/c"],
+            "Path with whitespace #3" => ["/a/b\n/c"],
+            "Path with whitespace #4" => ["/ / "],
 
-            // Includes empty segments
-            ["//"],
-            ["/a//b"],
+            "Empty segment #1" => ["//"],
+            "Empty segment #2" => ["/a//b"],
 
         ];
     }
@@ -73,8 +68,6 @@ final class JsonPointerUtilityTest extends TestCase
                 ["a", "b", "c"],
             ],
 
-            // Tilde symbols and forward slashes must be encoded as ~0 and ~1, respectively.
-            // https://datatracker.ietf.org/doc/html/rfc6901#section-3
             "Tilde #1" => [
                 "/some~0thing/else",
                 ["some~thing", "else"],
@@ -87,6 +80,7 @@ final class JsonPointerUtilityTest extends TestCase
                 "/some~01thing/else",
                 ["some~1thing", "else"],
             ],
+
             "Forward slash #1" => [
                 "/some~1thing/else",
                 ["some/thing", "else"],
@@ -99,6 +93,7 @@ final class JsonPointerUtilityTest extends TestCase
                 "/some~11thing/else",
                 ["some/1thing", "else"],
             ],
+
             "Specials combined" => [
                 "/some~0~1thing/else",
                 ["some~/thing", "else"],
@@ -128,19 +123,19 @@ final class JsonPointerUtilityTest extends TestCase
     public function provideCompileParentPaths(): array
     {
         return [
-            [
+            "Root includes root" => [
                 ["/"],
                 ["/"],
             ],
-            [
+            "Root-level path includes root" => [
                 ["/a"],
                 ["/"],
             ],
-            [
+            "Nested path includes all parents" => [
                 ["/a/b/c"],
                 ["/", "/a", "/a/b"],
             ],
-            [
+            "Encoded path includes all parents" => [
                 ["/a/a~0a/a~0b~1c/1"],
                 ["/", "/a", "/a/a~0a", "/a/a~0a/a~0b~1c"],
             ],

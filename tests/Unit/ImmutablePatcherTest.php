@@ -35,6 +35,10 @@ final class ImmutablePatcherTest extends TestCase
             $patcher = $patcher->addProtectedPath($path);
         }
 
+        // First, verify that all paths were added
+        $this->assertSame($protectedPaths, $patcher->getProtectedPaths());
+
+        // Then, verify that the will indeed block the operation(s)
         $patcher->patch($document, $operations);
     }
 
@@ -53,6 +57,13 @@ final class ImmutablePatcherTest extends TestCase
                 ["/a", "/b", "/c"],
                 [
                     ["op" => "remove", "path" => "/b"],
+                ],
+            ],
+            "Multiple protected nested paths" => [
+                ["a" => ["b" => ["c" => 3]]],
+                ["/a", "/a/b", "/a/b/c"],
+                [
+                    ["op" => "remove", "path" => "/a/b"],
                 ],
             ],
             "Protected root-level path with child operation" => [

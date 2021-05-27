@@ -20,15 +20,13 @@ final class ImmutablePatcherTest extends TestCase
      *
      * @dataProvider provideProtectedPaths
      * @param array $document
-     * @param array $protectedPaths
-     * @param array $operations
+     * @param string[] $protectedPaths
+     * @param array[] $operations
      * @return void
      * @throws PatchException
      */
     public function testProtectedPaths(array $document, array $protectedPaths, array $operations): void
     {
-        $this->expectException(ProtectedPathException::class);
-
         $patcher = new ImmutablePatcher();
 
         foreach ($protectedPaths as $path) {
@@ -38,7 +36,8 @@ final class ImmutablePatcherTest extends TestCase
         // First, verify that all paths were added
         $this->assertSame($protectedPaths, $patcher->getProtectedPaths());
 
-        // Then, verify that the will indeed block the operation(s)
+        // Then, verify that they will indeed block the operation(s)
+        $this->expectException(ProtectedPathException::class);
         $patcher->patch($document, $operations);
     }
 
@@ -100,6 +99,52 @@ final class ImmutablePatcherTest extends TestCase
                 [
                     ["op" => "move", "from" => "/b", "path" => "/a"],
                 ],
+            ],
+        ];
+    }
+
+    /**
+     * Test that other operations can still be executed successfully when using
+     * the protected paths functionality.
+     *
+     * @dataProvider provideNoUnwantedPathProtection
+     * @param array $document
+     * @param string[] $protectedPaths
+     * @param array[] $operations
+     * @param array $expected
+     * @return void
+     * @throws PatchException
+     */
+    public function testNoUnwantedPathProtection(array $document, array $protectedPaths, array $operations, array $expected): void
+    {
+        $patcher = new ImmutablePatcher();
+
+        foreach ($protectedPaths as $path) {
+            $patcher = $patcher->addProtectedPath($path);
+        }
+
+        $this->assertSame($protectedPaths, $patcher->getProtectedPaths());
+        $this->assertSame($expected, $patcher->patch($document, $operations));
+    }
+
+    public function provideNoUnwantedPathProtection(): array
+    {
+        return [
+            "No diagonal path protection" => [
+                ["a" => ["b" => ["c" => 3]]],
+                ["/a/b/c"],
+                [
+                    ["op" => "add", "path" => "/a/x", "value" => 1],
+                ],
+                ["a" => ["b" => ["c" => 3], "x" => 1]],
+            ],
+            "No partial matching on sibling paths" => [
+                ["a" => ["b" => 2, "b-2" => 2]],
+                ["/a/b"],
+                [
+                    ["op" => "replace", "path" => "/a/b-2", "value" => 3],
+                ],
+                ["a" => ["b" => 2, "b-2" => 3]],
             ],
         ];
     }

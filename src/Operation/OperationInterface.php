@@ -5,7 +5,7 @@ namespace Lindelius\JsonPatch\Operation;
 use JsonSerializable;
 
 /**
- * A common interface for JSON Patch operations.
+ * A shared interface for all JSON Patch operations.
  *
  * @internal
  */

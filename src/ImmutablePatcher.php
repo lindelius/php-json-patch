@@ -27,7 +27,12 @@ final class ImmutablePatcher implements PatcherInterface
     public function __construct(array $protectedPaths = [])
     {
         $this->protectedPaths = $protectedPaths;
-        $this->protectedParentPaths = array_flip(JsonPointerUtility::compileParentPaths($protectedPaths));
+
+        // Compile all protected parent paths, and then flip the array for much
+        // better look-up performance.
+        $this->protectedParentPaths = array_flip(
+            JsonPointerUtility::compileParentPaths($protectedPaths)
+        );
     }
 
     public function addProtectedPath(string $path): self
@@ -67,7 +72,13 @@ final class ImmutablePatcher implements PatcherInterface
      */
     private function ensurePathNotProtected(OperationInterface $operation): void
     {
-        if (empty($this->protectedPaths) || $operation instanceof TestOperation) {
+        if (empty($this->protectedPaths)) {
+            return;
+        }
+
+        // Since "test" operations are not modifying anything we should allow
+        // access to protected paths, as well.
+        if ($operation instanceof TestOperation) {
             return;
         }
 

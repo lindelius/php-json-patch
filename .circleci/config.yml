@@ -12,7 +12,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: "Install extensions"
+          name: "Install coverage report extension"
           command: |-
             sudo apt-get update
             sudo apt-get install -y php<< parameters.php_version >>-pcov

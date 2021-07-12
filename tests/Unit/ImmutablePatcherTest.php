@@ -146,6 +146,15 @@ final class ImmutablePatcherTest extends TestCase
                 ],
                 ["a" => ["b" => 2, "b-2" => 3]],
             ],
+            "No blocking of test operations" => [
+                ["a" => 1, "b" => 3],
+                ["/a"],
+                [
+                    ["op" => "test", "path" => "/a", "value" => 1],
+                    ["op" => "replace", "path" => "/b", "value" => 2],
+                ],
+                ["a" => 1, "b" => 2],
+            ],
         ];
     }
 }

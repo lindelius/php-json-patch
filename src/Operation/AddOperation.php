@@ -7,7 +7,6 @@ use Lindelius\JsonPatch\Utility\JsonPointerUtility;
 
 use function array_is_list;
 use function array_key_exists;
-use function array_merge;
 use function array_pop;
 use function array_splice;
 use function count;

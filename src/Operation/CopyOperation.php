@@ -85,7 +85,7 @@ final class CopyOperation implements OperationInterface
         return $this->path;
     }
 
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return [
             "op" => "copy",

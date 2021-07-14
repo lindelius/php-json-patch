@@ -100,8 +100,7 @@ final class AddOperation implements OperationInterface
                 if ($lastSegment === $currentCount) {
                     $pointer[] = $this->value;
                 } else {
-                    $succeedingItems = array_splice($pointer, $lastSegment);
-                    $pointer = array_merge($pointer, [$this->value], $succeedingItems);
+                    array_splice($pointer, $lastSegment, 0, $this->value);
                 }
             } else {
                 throw new FailedOperationException("The path for operation {$this->index} does not reference an object.");

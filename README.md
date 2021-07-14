@@ -29,7 +29,7 @@ of the latest release.
 
 ## Usage
 
-Given a set of JSON Patch operations:
+Given a set of JSON Patch operations...
 
 ```json
 [
@@ -42,46 +42,54 @@ Given a set of JSON Patch operations:
 ]
 ```
 
-Apply them to a given document through one of the [PatcherInterface](src/PatcherInterface.php) methods.
+And a document...
 
-```php
-$document = [
-    "name" => "Anakin Skywalker",
-    "friends" => ["Obi-Wan Kenobi", "Ahsoka Tano"],
-    "order" => "Jedi",
-];
-
-// Option 1: Provide the raw JSON string
-$newDocument = $patcher->patchFromJson($document, $json);
-
-// Option 2: Provide the JSON Patch operations in array format
-$newDocument = $patcher->patch($document, json_decode($json, true));
-
-// array(3) {
-//   ["title"]=>
-//   string(11) "Darth Vader"
-//   ["enemies"]=>
-//   array(2) {
-//     [0]=>
-//     string(14) "Obi-Wan Kenobi"
-//     [1]=>
-//     string(11) "Ahsoka Tano"
-//   }
-//   ["order"]=>
-//   string(4) "Sith"
-// }
+```json
+{
+    "name": "Anakin Skywalker",
+    "friends": ["Obi-Wan Kenobi", "Ahsoka Tano"],
+    "order": "Jedi"
+}
 ```
 
-Please note that this library only supports working with array documents, which means that if you would like to patch entity models you must first convert them to array format before applying the patches.
+You can atomically apply the patches through one of the [`Lindelius\JsonPatch\PatcherInterface`](src/PatcherInterface.php) methods...
+
+```php
+// Option 1: Provide the raw JSON string
+$newDocument = $patcher->patchFromJson($documentAsArray, $operationsAsJson);
+
+// Option 2: Provide the JSON Patch operations in array format
+$newDocument = $patcher->patch($documentAsArray, $operationsAsArray);
+```
+
+And get a new document back.
+
+```json
+{
+    "name": "Darth Vader",
+    "enemies": ["Obi-Wan Kenobi", "Ahsoka Tano"],
+    "order": "Sith"
+}
+```
+
+Please note that this library only supports working with array documents, which means that if you would like to patch entity models (or other objects) you must first convert them to array format before applying the patches.
 
 ### Protected Paths
 
-This library has built-in support for registering "protected paths", which are paths that may not be modified by any patch operation. A protected path will also block modifications to its parents and all of its children.
+This library has built-in support for registering "protected paths", which are paths that may not be modified by any patch operation. Protected paths will also block modifications to their parents and all of their children.
 
-The protected path below would, for example, also block direct modifications to `/`, `/some`, `/some/protected`, and `/some/protected/path/and/child`.
+For example, by protecting a path, `/some/protected/path`...
 
 ```php
 $patcher->addProtectedPath("/some/protected/path");
 ```
 
-If a patch operation attempts to modify a protected path, a [ProtectedPathException](src/Exception/ProtectedPathException.php) exception will be thrown.
+The following paths would be protected:
+
+- `/` - The root of the document
+- `/some` - The top-most parent
+- `/some/protected` - The immediate parent
+- `/some/protected/path` - The actual path
+- `/some/protected/path/child` - Any immediate or nested children
+
+Please note that "test" operations can still operate on protected paths since they are not actually modifying the document.

@@ -16,7 +16,7 @@ use PHPUnit\Framework\TestCase;
 final class ImmutablePatcherTest extends TestCase
 {
     /**
-     * Test the protected paths functionality.
+     * Test the "protected path" functionality.
      *
      * @dataProvider provideProtectedPaths
      * @param array $document
@@ -105,7 +105,7 @@ final class ImmutablePatcherTest extends TestCase
 
     /**
      * Test that other operations can still be executed successfully when using
-     * the protected paths functionality.
+     * the "protected path" functionality.
      *
      * @dataProvider provideNoUnwantedPathProtection
      * @param array $document

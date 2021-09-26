@@ -52,7 +52,7 @@ And a document...
 }
 ```
 
-You can atomically apply the patches through one of the [`Lindelius\JsonPatch\PatcherInterface`](src/PatcherInterface.php) methods...
+You can (atomically) apply the patches through one of the [`PatcherInterface`](src/PatcherInterface.php) methods...
 
 ```php
 // Option 1: Provide the raw JSON string
@@ -62,7 +62,7 @@ $newDocument = $patcher->patchFromJson($documentAsArray, $operationsAsJson);
 $newDocument = $patcher->patch($documentAsArray, $operationsAsArray);
 ```
 
-And get a new document back.
+And get a new document back :)
 
 ```json
 {
@@ -72,24 +72,12 @@ And get a new document back.
 }
 ```
 
-Please note that this library only supports working with array documents, which means that if you would like to patch entity models (or other objects) you must first convert them to array format before applying the patches.
-
 ### Protected Paths
 
-This library has built-in support for registering "protected paths", which are paths that may not be modified by any patch operation. Protected paths will also block modifications to their parents and all of their children.
-
-For example, by protecting a path, `/some/protected/path`...
+This library has built-in support for registering "protected paths", which are paths that may not be modified by any patch operation. Protected paths will indirectly also block modifications to their parent path(s) and any child paths.
 
 ```php
 $patcher->addProtectedPath("/some/protected/path");
 ```
 
-The following paths would be protected:
-
-- `/` - The root of the document
-- `/some` - The top-most parent
-- `/some/protected` - The immediate parent
-- `/some/protected/path` - The actual path
-- `/some/protected/path/child` - Any immediate or nested children
-
-Please note that "test" operations can still operate on protected paths since they are not actually modifying the document.
+Please note that "test" operations can still operate on a protected path since they are not actually modifying the document.

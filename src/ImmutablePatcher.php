@@ -77,7 +77,7 @@ final class ImmutablePatcher implements PatcherInterface
         }
 
         // Since "test" operations are not modifying anything we should allow
-        // access to protected paths, as well.
+        // them to access protected paths, as well.
         if ($operation instanceof TestOperation) {
             return;
         }

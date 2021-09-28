@@ -36,8 +36,7 @@ Given a set of JSON Patch operations...
     { "op": "test", "path": "/name", "value": "Anakin Skywalker" },
     { "op": "replace", "path": "/name", "value": "Darth Vader" },
     { "op": "add", "path": "/order", "value": "Sith" },
-    { "op": "move", "from": "/friends", "path": "/foes" },
-    { "op": "remove", "path": "/friends" }
+    { "op": "move", "from": "/friends", "path": "/foes" }
 ]
 ```
 

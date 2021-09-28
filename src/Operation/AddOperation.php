@@ -105,7 +105,7 @@ final class AddOperation implements OperationInterface
                 throw new FailedOperationException("The path for operation {$this->index} does not reference an object.");
             }
         } else {
-            // Set the value at the given path, whether or not it already exists
+            // Set the value at the given path, whether it already exists
             $pointer[$lastSegment] = $this->value;
         }
 

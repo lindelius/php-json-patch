@@ -68,7 +68,9 @@ final class OperationUtilityTest extends TestCase
 
         // Since the parsing is implemented as a generator, we need to actually
         // iterate over it in order to test it.
-        iterator_to_array(OperationUtility::parse($operations));
+        foreach(OperationUtility::parse($operations) as $operation) {
+            // Do nothing
+        }
     }
 
     public function provideParseErrors(): array

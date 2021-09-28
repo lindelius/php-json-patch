@@ -33,12 +33,11 @@ Given a set of JSON Patch operations...
 
 ```json
 [
-    { "op": "add", "path": "/name", "value": "Darth Vader" },
-    { "op": "copy", "from": "/friends", "path": "/enemies" },
-    { "op": "move", "from": "/name", "path": "/title" },
-    { "op": "remove", "path": "/friends" },
-    { "op": "replace", "path": "/order", "value": "Sith" },
-    { "op": "test", "path": "/title", "value": "Darth Vader" }
+    { "op": "test", "path": "/name", "value": "Anakin Skywalker" },
+    { "op": "replace", "path": "/name", "value": "Darth Vader" },
+    { "op": "add", "path": "/order", "value": "Sith" },
+    { "op": "move", "from": "/friends", "path": "/foes" },
+    { "op": "remove", "path": "/friends" }
 ]
 ```
 
@@ -67,7 +66,7 @@ And get a new document back :)
 ```json
 {
     "name": "Darth Vader",
-    "enemies": ["Obi-Wan Kenobi", "Ahsoka Tano"],
+    "foes": ["Obi-Wan Kenobi", "Ahsoka Tano"],
     "order": "Sith"
 }
 ```
@@ -77,7 +76,9 @@ And get a new document back :)
 This library has built-in support for registering "protected paths", which are paths that may not be modified by any patch operation. Protected paths will indirectly also block modifications to their parent path(s) and any child paths.
 
 ```php
-$patcher->addProtectedPath("/some/protected/path");
+$patcher->addProtectedPath("/id");
+$patcher->addProtectedPath("/created_at");
+$patcher->addProtectedPath("/some/nested/path");
 ```
 
 Please note that "test" operations can still operate on a protected path since they are not actually modifying the document.
